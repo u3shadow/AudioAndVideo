@@ -18,6 +18,6 @@ public class MediaExAndMuxerActivity extends Activity{
         setContentView(R.layout.media_layout);
         MediaExtractor extractor = new MediaExtractor();
         VideoExtractor videoExtractor = new VideoExtractor();
-        videoExtractor.process();
+        videoExtractor.muxerMediaAudio();
     }
 }
