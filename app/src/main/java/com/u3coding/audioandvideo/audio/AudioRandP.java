@@ -19,7 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class AudioRandP{
     private SurfaceView surfaceView;
     private byte[] outBuf;
     private boolean isStart=false;
@@ -28,43 +28,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AudioTrack audioTrack;
     private int minBufferSize;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public void recordAudio(){
+        initAudio();
+        isStart = true;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                record();
+            }
+        }).start();
     }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.record:
-                initAudio();
-                isStart = true;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        record();
-                    }
-                }).start();
-                Log.i("ppp","record");
-                break;
-            case R.id.stop:
-                stop();
-                Log.i("ppp","stop");
-                break;
-            case R.id.play:
-                isStart = true;
-                createPlayer();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        play();
-                    }
-                }).start();
-                Log.i("ppp","play");
-                break;
-            default:break;
-        }
+    public void stopRecord(){
+        stop();
+    }
+    public void playAudio(){
+        isStart = true;
+        createPlayer();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                play();
+            }
+        }).start();
     }
     private void initAudio(){
         int sampleRateInHz = 48000;//采样率
