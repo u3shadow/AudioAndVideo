@@ -5,8 +5,13 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaRecorder;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -62,10 +67,21 @@ public class AudioEncoder implements AudioCodec{
                 Log.d(TAG,"音频编码器初始化失败");
                 isRunning=false;
             }
+            FileInputStream fileInputStream = null;
+            FileOutputStream fileOutputStream = null;
+            try {
+               fileInputStream=new FileInputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/outputs.pcm"));
+               fileOutputStream = new FileOutputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/outputs.pcm"));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             while(isRunning){
-                int num = mRecord.read(mBuffer, 0, mFrameSize);
-                Log.d(TAG, "buffer = " + mBuffer.toString() + ", num = " + num);
-                encode(mBuffer);
+                try {
+                    fileInputStream.read(mBuffer,0,mFrameSize);
+                    fileOutputStream.write(encode(mBuffer));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             release();
         }
@@ -116,7 +132,7 @@ public class AudioEncoder implements AudioCodec{
             mRecord.startRecording();
             return true;
         }
-        private void encode(byte[] data) {
+        private byte[] encode(byte[] data) {
             int inputBufferIndex = mEncoder.dequeueInputBuffer(-1);
             if (inputBufferIndex >= 0) {
                 ByteBuffer inputBuffer = mEncoder.getInputBuffer(inputBufferIndex);
@@ -128,6 +144,7 @@ public class AudioEncoder implements AudioCodec{
             }
 
             int outputBufferIndex = mEncoder.dequeueOutputBuffer(mBufferInfo, 0);
+
             while (outputBufferIndex >= 0) {
                 ByteBuffer outputBuffer = mEncoder.getOutputBuffer(outputBufferIndex);
                 //给adts头字段空出7的字节
@@ -140,6 +157,7 @@ public class AudioEncoder implements AudioCodec{
                 mEncoder.releaseOutputBuffer(outputBufferIndex, false);
                 outputBufferIndex = mEncoder.dequeueOutputBuffer(mBufferInfo, 0);
             }
+            return data;
         }
 
         /**
