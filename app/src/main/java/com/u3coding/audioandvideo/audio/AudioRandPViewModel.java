@@ -17,8 +17,8 @@ public class AudioRandPViewModel extends ViewModel{
         audio.playAudio();
     }
     public void setAudio(Audio audio){
-        audio.recordString.set("1");
-        audio.stopString.set("2");
-        audio.playString.set("3");
+        audio.recordString.set("record");
+        audio.stopString.set("stop");
+        audio.playString.set("play");
     }
 }

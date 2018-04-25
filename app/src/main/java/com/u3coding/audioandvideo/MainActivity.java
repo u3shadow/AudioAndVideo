@@ -18,9 +18,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         Audio audio = new Audio();
-        audio.recordString.set("record");
-        audio.stopString.set("stop");
-        audio.playString.set("play");
         binding.setAudioRandP(audio);
         viewModel = ViewModelProviders.of(this).get(AudioRandPViewModel.class);
         viewModel.setAudio(audio);

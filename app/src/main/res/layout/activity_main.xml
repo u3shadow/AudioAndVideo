@@ -27,6 +27,15 @@
         android:onClick="onClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
+    <Button
+        android:id="@+id/Extrat_bt"
+        android:text="@string/extrat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/Merge_bt"
+        android:text="@string/merge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>
 </layout>

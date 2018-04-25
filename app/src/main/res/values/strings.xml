@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AudioAndVideo</string>
+    <string name="extrat">extrat</string>
+    <string name="merge">merge</string>
 </resources>
