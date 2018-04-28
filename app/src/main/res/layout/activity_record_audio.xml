@@ -13,7 +13,7 @@
     tools:context="com.u3coding.playerandrecoder.audiorecoder.RecordAudioActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -22,22 +22,22 @@
         tools:layout_editor_absoluteY="47dp" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/bt_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
         android:layout_marginTop="144dp"
         android:text="@{pagetext.startBtText}"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_record" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/bt_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
         android:text="@{pagetext.stopBtText}"
-        app:layout_constraintBottom_toBottomOf="@+id/button3"
-        app:layout_constraintStart_toEndOf="@+id/button3" />
+        app:layout_constraintBottom_toBottomOf="@+id/bt_stop"
+        app:layout_constraintStart_toEndOf="@+id/bt_stop" />
 </android.support.constraint.ConstraintLayout>
 </layout>

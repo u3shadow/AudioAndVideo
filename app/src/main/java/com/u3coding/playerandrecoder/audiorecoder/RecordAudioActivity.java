@@ -4,11 +4,12 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.u3coding.audioandvideo.R;
 import com.u3coding.audioandvideo.databinding.ActivityRecordAudioBinding;
 
-public class RecordAudioActivity extends AppCompatActivity {
+public class RecordAudioActivity extends AppCompatActivity implements View.OnClickListener {
     private RecordAudioViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,5 +17,16 @@ public class RecordAudioActivity extends AppCompatActivity {
        ActivityRecordAudioBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_record_audio);
        viewModel = ViewModelProviders.of(this).get(RecordAudioViewModel.class);
        binding.setPagetext(viewModel.getPageText());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.bt_start:
+                break;
+            case R.id.bt_stop:
+                break;
+            default:break;
+        }
     }
 }
