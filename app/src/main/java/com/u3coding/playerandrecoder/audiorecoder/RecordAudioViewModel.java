@@ -33,9 +33,4 @@ public class RecordAudioViewModel extends AndroidViewModel implements LifecycleO
         page.recordText.set(application.getResources().getString(R.string.no_record));
         recorder.stop();
     }
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    private void clear(){
-        recorder = null;
-    }
-
 }

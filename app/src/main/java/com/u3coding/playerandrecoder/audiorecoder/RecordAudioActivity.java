@@ -1,9 +1,8 @@
 package com.u3coding.playerandrecoder.audiorecoder;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,13 +29,10 @@ public class RecordAudioActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.bt_stop:
                 viewModel.stop();
+               AlertDialog dialog =  new AlertDialog.Builder(this).setView(R.layout.name_type_layout).create();
+               dialog.show();
                 break;
             default:break;
         }
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }

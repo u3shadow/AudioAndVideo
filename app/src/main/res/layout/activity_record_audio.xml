@@ -42,5 +42,6 @@
         android:text="@{pagetext.stopBtText}"
         app:layout_constraintBottom_toBottomOf="@+id/bt_start"
         app:layout_constraintStart_toEndOf="@+id/bt_start" />
+
 </android.support.constraint.ConstraintLayout>
 </layout>
