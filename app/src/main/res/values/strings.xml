@@ -5,4 +5,5 @@
     <string name="no_record">Not Record yet</string>
     <string name="start">start</string>
     <string name="stop">stop</string>
+    <string name="recording">recording</string>
 </resources>
