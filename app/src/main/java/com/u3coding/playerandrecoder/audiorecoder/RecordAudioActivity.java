@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.u3coding.audioandvideo.R;
 import com.u3coding.audioandvideo.databinding.ActivityRecordAudioBinding;
+import com.u3coding.playerandrecoder.encoders.AACEncoder;
 
 public class RecordAudioActivity extends AppCompatActivity implements View.OnClickListener{
     private RecordAudioViewModel viewModel;
@@ -29,8 +30,8 @@ public class RecordAudioActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.bt_stop:
                 viewModel.stop();
-               AlertDialog dialog =  new AlertDialog.Builder(this).setView(R.layout.name_type_layout).create();
-               dialog.show();
+                AACEncoder encoder = new AACEncoder();
+                encoder.encode("","");
                 break;
             default:break;
         }
