@@ -2,14 +2,16 @@ package com.u3coding.playerandrecoder.audiorecoder;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.u3coding.audioandvideo.R;
 import com.u3coding.audioandvideo.databinding.ActivityRecordAudioBinding;
-import com.u3coding.playerandrecoder.encoders.AACEncoder;
 
 public class RecordAudioActivity extends AppCompatActivity implements View.OnClickListener{
     private RecordAudioViewModel viewModel;
@@ -27,11 +29,14 @@ public class RecordAudioActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.bt_start:
                 viewModel.record();
+                v.setVisibility(View.INVISIBLE);
+                findViewById(R.id.bt_stop).setVisibility(View.VISIBLE);
                 break;
             case R.id.bt_stop:
                 viewModel.stop();
-                AACEncoder encoder = new AACEncoder();
-                encoder.encode("","");
+                viewModel.saveAACFile("test");
+                v.setVisibility(View.INVISIBLE);
+                findViewById(R.id.bt_start).setVisibility(View.VISIBLE);
                 break;
             default:break;
         }

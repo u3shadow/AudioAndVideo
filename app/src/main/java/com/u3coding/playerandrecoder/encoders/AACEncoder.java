@@ -1,18 +1,15 @@
 package com.u3coding.playerandrecoder.encoders;
 
-import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
-import android.media.MediaRecorder;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -70,8 +67,8 @@ public class AACEncoder extends BaseEncoder{
             release();
         }
         void setPath(String path,String name){
-           this.path =  Environment.getExternalStorageDirectory().getAbsolutePath();
-            this.name = "/test.aac";
+           this.path =  path;
+           this.name = "/"+name+".aac";
         }
         /**
          * 释放资源

@@ -6,4 +6,5 @@
     <string name="start">start</string>
     <string name="stop">stop</string>
     <string name="recording">recording</string>
+    <string name="emptyname">Please input name</string>
 </resources>

@@ -7,5 +7,4 @@ public class RecordPage {
     public ObservableField<String> startBtText = new ObservableField<>();
     public ObservableField<String> stopBtText = new ObservableField<>();
     public ObservableField<String> name = new ObservableField<>();
-    public ObservableField<Boolean> isNameShow = new ObservableField<>();
 }
