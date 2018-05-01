@@ -34,10 +34,18 @@ public class RecordAudioActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.bt_stop:
                 viewModel.stop();
-                viewModel.saveAACFile("test");
                 v.setVisibility(View.INVISIBLE);
-                findViewById(R.id.bt_start).setVisibility(View.VISIBLE);
+                findViewById(R.id.ll_name).setVisibility(View.VISIBLE);
                 break;
+            case R.id.bt_name:
+                String name = ((EditText)findViewById(R.id.et_name)).getText().toString();
+                if (!name.isEmpty()){
+                    viewModel.saveAACFile(name);
+                    findViewById(R.id.ll_name).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.bt_start).setVisibility(View.VISIBLE);
+                }else{
+                    Snackbar.make(findViewById(R.id.bt_start),"empty name",Snackbar.LENGTH_LONG).show();
+                }
             default:break;
         }
     }

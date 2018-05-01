@@ -7,4 +7,6 @@
     <string name="stop">stop</string>
     <string name="recording">recording</string>
     <string name="emptyname">Please input name</string>
+    <string name="ok">OK</string>
+    <string name="input_name">input name</string>
 </resources>
