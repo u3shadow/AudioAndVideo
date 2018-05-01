@@ -42,6 +42,7 @@ public class VideoActivity extends Activity implements TextureView.SurfaceTextur
         Camera.Parameters parameters = mCamera.getParameters();
         parameters.setPreviewFormat(ImageFormat.NV21);
         mCamera.setParameters(parameters);
+        mCamera.setDisplayOrientation(90);
         mCamera.setPreviewCallback(new Camera.PreviewCallback() {
             @Override
             public void onPreviewFrame(byte[] bytes, Camera camera) {
