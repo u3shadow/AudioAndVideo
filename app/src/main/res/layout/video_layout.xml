@@ -4,13 +4,20 @@
     android:layout_height="match_parent">
     <FrameLayout
         android:id="@+id/camera_preview"
-        android:visibility="gone"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        />
+       >
     <TextureView
         android:id="@+id/texture"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/bt_record"
+            android:text="@string/recording"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
 </LinearLayout>

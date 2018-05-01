@@ -27,7 +27,10 @@
         <activity android:name=".mp4.MediaExAndMuxerActivity"></activity>
         <activity android:name=".opengl.OpenGLES20Activity"></activity>
         <activity android:name="com.u3coding.playerandrecoder.audiorecoder.RecordAudioActivity">
-                 <intent-filter>
+
+        </activity>
+        <activity android:name="com.u3coding.playerandrecoder.videorecoder.VideoActivity" android:screenOrientation="landscape">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
