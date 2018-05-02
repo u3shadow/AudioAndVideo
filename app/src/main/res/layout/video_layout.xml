@@ -16,7 +16,16 @@
             android:id="@+id/bt_record"
             android:text="@string/recording"
             android:layout_width="wrap_content"
+            android:onClick="onClick"
             android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content" />
+         <Button
+            android:id="@+id/bt_stop"
+            android:text="@string/stop"
+            android:layout_width="wrap_content"
+             android:onClick="onClick"
+            android:layout_gravity="bottom"
             android:layout_marginBottom="20dp"
             android:layout_height="wrap_content" />
     </FrameLayout>

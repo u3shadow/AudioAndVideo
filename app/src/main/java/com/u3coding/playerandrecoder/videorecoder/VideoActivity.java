@@ -1,6 +1,7 @@
 package com.u3coding.playerandrecoder.videorecoder;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -8,25 +9,31 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.TextureView;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.u3coding.audioandvideo.R;
+import com.u3coding.playerandrecoder.audiorecoder.RecordAudioViewModel;
 
 /**
  * Created by u3-linux on 18-2-14.
  */
 
-public class VideoActivity extends Activity implements TextureView.SurfaceTextureListener{
+public class VideoActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener,View.OnClickListener{
     private Camera mCamera;
     private CameraPreview mPreview;
     private TextureView textureView;
+    private RecordVideoViewModel viewModel;
+    private boolean isStart = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.video_layout);
+        viewModel = ViewModelProviders.of(this).get(RecordVideoViewModel.class);
         if(checkCameraHardware(this)){
             mCamera = getCameraInstance();
         }
@@ -46,7 +53,8 @@ public class VideoActivity extends Activity implements TextureView.SurfaceTextur
         mCamera.setPreviewCallback(new Camera.PreviewCallback() {
             @Override
             public void onPreviewFrame(byte[] bytes, Camera camera) {
-
+                if (isStart)
+                viewModel.encode(bytes);
             }
         });
     }
@@ -94,5 +102,20 @@ public class VideoActivity extends Activity implements TextureView.SurfaceTextur
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.bt_record:
+                viewModel.startRecord(768,1366);
+                isStart = true;
+                break;
+            case R.id.bt_stop:
+                viewModel.stopRecord();
+                isStart =false;
+                break;
+                default:break;
+        }
     }
 }
