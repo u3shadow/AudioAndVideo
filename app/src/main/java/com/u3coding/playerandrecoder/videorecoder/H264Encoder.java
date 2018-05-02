@@ -17,7 +17,7 @@ public class H264Encoder {
     private int height;
     final private static int FRAMERATE = 30;
     private BufferedOutputStream outputStream;
-    final private static long TIMEOUT_USEC = -1;
+    final private static long TIMEOUT_USEC = 0;
     private File fileTemp;
     private boolean isRecording = false;
 
@@ -70,7 +70,7 @@ public class H264Encoder {
                     inputBuffer.clear();
                     inputBuffer.put(input);//往输入缓冲区写入数据,
                     //                    //五个参数，第一个是输入缓冲区的索引，第二个数据是输入缓冲区起始索引，第三个是放入的数据大小，第四个是时间戳，保证递增就是
-                    mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, System.nanoTime() / 1000, 0);
+                    mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, 0, 0);
 
                 }
 
