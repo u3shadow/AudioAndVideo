@@ -47,7 +47,7 @@ public class H264Encoder {
     public void startRecord(){
         isRecording = true;
     }
-    private void encode(byte[] data){
+    public void encode(byte[] data){
         if (isRecording){
             codeData(data);
         }
