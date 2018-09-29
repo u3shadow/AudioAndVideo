@@ -6,6 +6,7 @@ import android.media.AudioTrack;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -14,7 +15,10 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 public class AudioDeCoder{
-
+public  void play(){
+    ReadAACFileThread thread = new ReadAACFileThread("");
+    thread.start();
+}
 }
 class MyAudioTrack {
     private int mFrequency;// 采样率
@@ -240,7 +244,7 @@ class ReadAACFileThread extends Thread {
 
     public ReadAACFileThread(String path) {
         this.audioUtil = new AACDecoderUtil();
-        this.filePath = path;
+        this.filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/oooo.aac";
         this.audioUtil.start();
     }
 

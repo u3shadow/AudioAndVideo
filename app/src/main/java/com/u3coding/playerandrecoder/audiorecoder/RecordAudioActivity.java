@@ -11,7 +11,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.u3coding.audioandvideo.R;
+import com.u3coding.audioandvideo.codeanddecode.AudioDeCoder;
 import com.u3coding.audioandvideo.databinding.ActivityRecordAudioBinding;
+import com.u3coding.playerandrecoder.encoders.AACDeCoder;
 
 public class RecordAudioActivity extends AppCompatActivity implements View.OnClickListener{
     private RecordAudioViewModel viewModel;
@@ -28,9 +30,12 @@ public class RecordAudioActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_start:
-                viewModel.record();
+                AACDeCoder deCoder = new AACDeCoder();
+                deCoder.init();
+                deCoder.decode();
+              /*  viewModel.record();
                 v.setVisibility(View.INVISIBLE);
-                findViewById(R.id.bt_stop).setVisibility(View.VISIBLE);
+                findViewById(R.id.bt_stop).setVisibility(View.VISIBLE);*/
                 break;
             case R.id.bt_stop:
                 viewModel.stop();

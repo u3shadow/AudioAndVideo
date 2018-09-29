@@ -108,7 +108,7 @@ public class AudioRandP{
     private void play(){
         try {
 
-            FileInputStream fileInputStream=new FileInputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/outputs.pcm"));
+            FileInputStream fileInputStream=new FileInputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/解码的pcm.pcm"));
             audioTrack.play();//开始播放
             int len=-1;
             byte[] arr=new byte[minBufferSize];
