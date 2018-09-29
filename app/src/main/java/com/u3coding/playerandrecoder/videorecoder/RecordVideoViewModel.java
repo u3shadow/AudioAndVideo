@@ -12,7 +12,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class RecordVideoViewModel extends AndroidViewModel{
-    private H264Encoder encoder;
+    private AvcEncoder encoder;
 
 	private Queue<byte[]> YUVQueue;
 
@@ -20,20 +20,16 @@ public class RecordVideoViewModel extends AndroidViewModel{
         super(application);
     }
     public void startRecord(int width,int height){
-        if (encoder == null)
-        encoder = new H264Encoder(width,height);
-        encoder.startRecord();
         YUVQueue = new LinkedBlockingQueue<>();
     }
     public void recordData(byte[] data){
         YUVQueue.add(data);
     }
     public void setName(String name){
-        encoder.setName(name);
     }
     public void stopRecord(){
-        encoder.stopRecord();
-        encoder.encode(YUVQueue);
+        encoder = new AvcEncoder(1280,720,30,1,YUVQueue);
+        encoder.StartEncoderThread();
     }
 
 }
