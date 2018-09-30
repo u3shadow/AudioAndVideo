@@ -4,15 +4,11 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class RecordVideoViewModel extends AndroidViewModel{
-    private AvcEncoder encoder;
+    private H264Encoder encoder;
 
 	private Queue<byte[]> YUVQueue;
 
@@ -28,7 +24,7 @@ public class RecordVideoViewModel extends AndroidViewModel{
     public void setName(String name){
     }
     public void stopRecord(){
-        encoder = new AvcEncoder(1280,720,30,1,YUVQueue);
+        encoder = new H264Encoder(1280,720,30,1,YUVQueue);
         encoder.StartEncoderThread();
     }
 

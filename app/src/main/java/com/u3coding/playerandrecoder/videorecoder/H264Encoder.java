@@ -1,132 +1,177 @@
 package com.u3coding.playerandrecoder.videorecoder;
-
-import android.media.MediaCodec;
-import android.media.MediaCodecInfo;
-import android.media.MediaFormat;
-import android.os.Environment;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.BlockingQueue;
 
+import android.annotation.SuppressLint;
+import android.media.MediaCodec;
+import android.media.MediaCodecInfo;
+import android.media.MediaFormat;
+import android.os.Environment;
 public class H264Encoder {
-    private int bitrate;
-    private MediaCodec mMediaCodec;
-    private int width;
-    private int height;
-    final private static int FRAMERATE = 30;
-    private BufferedOutputStream outputStream;
-    final private static long TIMEOUT_USEC = 12000;
-    private File fileTemp;
-    private boolean isRecording = false;
+    private final static String TAG = "MeidaCodec";
 
-    public H264Encoder(int width,int height){
-        this.width = width;
-        this.height = height;
-        initMediaCodec(width,height);
-        createfile();
-    }
-    private void initMediaCodec(int width,int height) {
-        bitrate = 5 * width * height;//码率
+    private int TIMEOUT_USEC = 12000;
+
+    private MediaCodec mediaCodec;
+    int m_width;
+    int m_height;
+    int m_framerate;
+    byte[] m_info = null;
+
+    public byte[] configbyte;
+    private Queue<byte[]> YUVQueue;
+
+
+    @SuppressLint("NewApi")
+    public H264Encoder(int width, int height, int framerate, int bitrate, Queue<byte[]> YUVQueue) {
+
+        this.YUVQueue = YUVQueue;
+        m_width  = width;
+        m_height = height;
+        m_framerate = framerate;
+
+        MediaFormat mediaFormat = MediaFormat.createVideoFormat("video/avc", width, height);
+        mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
+        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, width*height*5);
+        mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
+        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
         try {
-            mMediaCodec = MediaCodec.createEncoderByType("video/avc");
-            MediaFormat mediaFormat = MediaFormat.createVideoFormat("video/avc", height, width); //height和width一般都是照相机的height和width。
-            //描述平均位速率（以位/秒为单位）的键。 关联的值是一个整数
-            mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitrate);
-            mediaFormat.setInteger(MediaFormat.KEY_BITRATE_MODE,MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CQ);
-            //描述视频格式的帧速率（以帧/秒为单位）的键。
-            mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, FRAMERATE);//帧率，一般在15至30之内，太小容易造成视频卡顿。
-            mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar);//色彩格式，具体查看相关API，不同设备支持的色彩格式不尽相同
-            //关键帧间隔时间，单位是秒
-            mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
-            mMediaCodec.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
-            mMediaCodec.start();//开始编码
+            mediaCodec = MediaCodec.createEncoderByType("video/avc");
         } catch (IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        mediaCodec.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
+        mediaCodec.start();
+        createfile();
     }
 
-    public void startRecord(){
-        isRecording = true;
-    }
-    public void encode(Queue<byte[]> datas){
-
-        new Thread(()->codeData(datas)).start();
-
-    }
-    public void stopRecord(){
-        isRecording = false;
-    }
-     private long computePresentationTime(long frameIndex) {
-        return 132 + frameIndex * 1000000 / FRAMERATE;
-    }
-    private void codeData(Queue<byte[]> datas){
-        while(datas.size() > 0) {
-            byte[] input = datas.poll();
-            byte[] yuv420sp = new byte[width * height * 3 / 2];
-            NV21ToNV12(input, yuv420sp, width, height);
-            input = yuv420sp;
-            long pts = 0;
-            long generateIndex = 0;
-            if (input != null) {
-                try {
-                    ByteBuffer[] inputBuffers = mMediaCodec.getInputBuffers();//拿到输入缓冲区,用于传送数据进行编码
-                    ByteBuffer[] outputBuffers = mMediaCodec.getOutputBuffers();//拿到输出缓冲区,用于取到编码后的数据
-                    int inputBufferIndex = mMediaCodec.dequeueInputBuffer(-1);
-                    if (inputBufferIndex >= 0) {//当输入缓冲区有效时,就是>=0
-                        pts = computePresentationTime(generateIndex);
-                        ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
-                        inputBuffer.clear();
-                        inputBuffer.put(input);//往输入缓冲区写入数据,
-                        //                    //五个参数，第一个是输入缓冲区的索引，第二个数据是输入缓冲区起始索引，第三个是放入的数据大小，第四个是时间戳，保证递增就是
-                        mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, pts, 0);
-                        generateIndex++;
-
-                    }
-
-                    MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
-                    int outputBufferIndex = mMediaCodec.dequeueOutputBuffer(bufferInfo, TIMEOUT_USEC);//拿到输出缓冲区的索引
-                    while (outputBufferIndex >= 0) {
-                        ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
-                        byte[] outData = new byte[bufferInfo.size];
-                        outputBuffer.get(outData);
-                        //outData就是输出的h264数据
-                        outputStream.write(outData, 0, outData.length);//将输出的h264数据保存为文件，用vlc就可以播放
-
-                        mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
-                        outputBufferIndex = mMediaCodec.dequeueOutputBuffer(bufferInfo, TIMEOUT_USEC);
-                    }
-
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
-            }
-        }
-    }
-    public boolean setName(String name){
-        File fileTo = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+name);
-        return fileTemp.renameTo(fileTo);
-    }
+    private static String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/oooo.h264";
+    private BufferedOutputStream outputStream;
+    FileOutputStream outStream;
     private void createfile(){
-        fileTemp = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp.h264");
-        if(fileTemp.exists()){
-            fileTemp.delete();
+        File file = new File(path);
+        if(file.exists()){
+            file.delete();
         }
         try {
-            outputStream = new BufferedOutputStream(new FileOutputStream(fileTemp));
+            outputStream = new BufferedOutputStream(new FileOutputStream(file));
         } catch (Exception e){
             e.printStackTrace();
         }
     }
+
+    @SuppressLint("NewApi")
+    private void StopEncoder() {
+        try {
+            mediaCodec.stop();
+            mediaCodec.release();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    ByteBuffer[] inputBuffers;
+    ByteBuffer[] outputBuffers;
+
+    public boolean isRuning = false;
+
+    public void StopThread(){
+        isRuning = false;
+        try {
+            StopEncoder();
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    int count = 0;
+
+    public void StartEncoderThread(){
+        Thread EncoderThread = new Thread(new Runnable() {
+
+            @SuppressLint("NewApi")
+            @Override
+            public void run() {
+                isRuning = true;
+                byte[] input = null;
+                long pts =  0;
+                long generateIndex = 0;
+
+                while (isRuning) {
+                    if (YUVQueue.size() >0){
+                        input = YUVQueue.poll();
+                        byte[] yuv420sp = new byte[m_width*m_height*3/2];
+                        NV21ToNV12(input,yuv420sp,m_width,m_height);
+                        input = yuv420sp;
+                    }
+                    if (input != null) {
+                        try {
+                            long startMs = System.currentTimeMillis();
+                            ByteBuffer[] inputBuffers = mediaCodec.getInputBuffers();
+                            ByteBuffer[] outputBuffers = mediaCodec.getOutputBuffers();
+                            int inputBufferIndex = mediaCodec.dequeueInputBuffer(-1);
+                            if (inputBufferIndex >= 0) {
+                                pts = computePresentationTime(generateIndex);
+                                ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
+                                inputBuffer.clear();
+                                inputBuffer.put(input);
+                                mediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, pts, 0);
+                                generateIndex += 1;
+                            }
+
+                            MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
+                            int outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, TIMEOUT_USEC);
+                            while (outputBufferIndex >= 0) {
+                                //Log.i("H264Encoder", "Get H264 Buffer Success! flag = "+bufferInfo.flags+",pts = "+bufferInfo.presentationTimeUs+"");
+                                ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
+                                byte[] outData = new byte[bufferInfo.size];
+                                outputBuffer.get(outData);
+                                if(bufferInfo.flags == 2){
+                                    configbyte = new byte[bufferInfo.size];
+                                    configbyte = outData;
+                                }else if(bufferInfo.flags == 1){
+                                    byte[] keyframe = new byte[bufferInfo.size + configbyte.length];
+                                    System.arraycopy(configbyte, 0, keyframe, 0, configbyte.length);
+                                    System.arraycopy(outData, 0, keyframe, configbyte.length, outData.length);
+
+                                    outputStream.write(keyframe, 0, keyframe.length);
+                                }else{
+                                    outputStream.write(outData, 0, outData.length);
+                                }
+
+                                mediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+                                outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, TIMEOUT_USEC);
+                            }
+
+                        } catch (Throwable t) {
+                            t.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        EncoderThread.start();
+
+    }
+
     private void NV21ToNV12(byte[] nv21,byte[] nv12,int width,int height){
         if(nv21 == null || nv12 == null)return;
         int framesize = width*height;
-        int i,j;
+        int i = 0,j = 0;
         System.arraycopy(nv21, 0, nv12, 0, framesize);
         for(i = 0; i < framesize; i++){
             nv12[i] = nv21[i];
@@ -141,4 +186,10 @@ public class H264Encoder {
         }
     }
 
+    /**
+     * Generates the presentation time for frame N, in microseconds.
+     */
+    private long computePresentationTime(long frameIndex) {
+        return 132 + frameIndex * 1000000 / m_framerate;
+    }
 }
