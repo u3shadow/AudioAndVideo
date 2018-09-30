@@ -149,6 +149,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                 if(parameters == null){
                     parameters = mCamera.getParameters();
                 }
+
                 parameters = mCamera.getParameters();
                 parameters.setPreviewFormat(ImageFormat.NV21);
                 parameters.setPreviewSize(width, height);
