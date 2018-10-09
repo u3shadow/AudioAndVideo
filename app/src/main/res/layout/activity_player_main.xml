@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.u3coding.playerandrecoder.main.PlayerMainActivity"
+    >
+    <data>
+        <variable
+            name="mainpage"
+            type="com.u3coding.playerandrecoder.main.MainPage"/>
+    </data>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<Button
+    android:text="@string/audio"
+    android:onClick="@{mainpage.recordAudio}"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+<Button
+    android:text="@string/video"
+    android:onClick="@{mainpage.recordVideo}"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+</LinearLayout>
+</layout>
