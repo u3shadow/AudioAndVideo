@@ -13,6 +13,8 @@ import com.u3coding.audioandvideo.databinding.ActivityRecordAudioBinding;
 
 public class RecordAudioActivity extends AppCompatActivity implements View.OnClickListener{
     private RecordAudioViewModel viewModel;
+    private AACDeCoder deCoder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
@@ -26,12 +28,9 @@ public class RecordAudioActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_start:
-                AACDeCoder deCoder = new AACDeCoder();
-                deCoder.init();
-                deCoder.decode();
-              /*  viewModel.record();
+                viewModel.record();
                 v.setVisibility(View.INVISIBLE);
-                findViewById(R.id.bt_stop).setVisibility(View.VISIBLE);*/
+                findViewById(R.id.bt_stop).setVisibility(View.VISIBLE);
                 break;
             case R.id.bt_stop:
                 viewModel.stop();
