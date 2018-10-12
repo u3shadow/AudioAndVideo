@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.u3coding.playerandrecoder.audio.RecordAudioActivity;
+import com.u3coding.playerandrecoder.mp4.VideoExtractor;
 import com.u3coding.playerandrecoder.video.RecordVideoActivity;
 
 public class MainPage{
@@ -14,5 +15,10 @@ public class MainPage{
     public void recordVideo(View view){
         Intent intent = new Intent(view.getContext(),RecordVideoActivity.class);
         view.getContext().startActivity(intent);
+    }
+     public void merge(View view){
+         VideoExtractor extractor = new VideoExtractor();
+         extractor.muxerMediaAudio();
+         extractor.muxerMediaVideo();
     }
 }
