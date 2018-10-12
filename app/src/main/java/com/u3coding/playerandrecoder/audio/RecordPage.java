@@ -1,4 +1,4 @@
-package com.u3coding.playerandrecoder.audiorecoder;
+package com.u3coding.playerandrecoder.audio;
 
 import android.databinding.ObservableField;
 

@@ -3,8 +3,8 @@ package com.u3coding.playerandrecoder.main;
 import android.content.Intent;
 import android.view.View;
 
-import com.u3coding.audioandvideo.video.VideoActivity;
-import com.u3coding.playerandrecoder.audiorecoder.RecordAudioActivity;
+import com.u3coding.playerandrecoder.audio.RecordAudioActivity;
+import com.u3coding.playerandrecoder.video.RecordVideoActivity;
 
 public class MainPage{
     public void recordAudio(View view){
@@ -12,7 +12,7 @@ public class MainPage{
         view.getContext().startActivity(intent);
     }
     public void recordVideo(View view){
-        Intent intent = new Intent(view.getContext(),VideoActivity.class);
+        Intent intent = new Intent(view.getContext(),RecordVideoActivity.class);
         view.getContext().startActivity(intent);
     }
 }

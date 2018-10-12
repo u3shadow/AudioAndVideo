@@ -19,19 +19,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"/>
-        <activity
-            android:name=".video.VideoActivity"
-            android:screenOrientation="landscape" />
         <activity android:name=".mp4.MediaExAndMuxerActivity" />
         <activity android:name=".opengl.OpenGLES20Activity" />
-        <activity android:name="com.u3coding.playerandrecoder.audiorecoder.RecordAudioActivity">
+        <activity android:name="com.u3coding.playerandrecoder.audio.RecordAudioActivity"/>
+        <activity android:name=".video.VideoActivity">
 
         </activity>
-        <activity android:name="com.u3coding.playerandrecoder.videorecoder.VideoActivity"/>
+        <activity android:name="com.u3coding.playerandrecoder.video.RecordVideoActivity"/>
         <activity android:name=".TestActivity"/>
-        <activity android:name="com.u3coding.playerandrecoder.videorecoder.ParseH264FileActivity"/>
+        <activity android:name="com.u3coding.playerandrecoder.video.ParseH264FileActivity"/>
         <activity android:name="com.u3coding.playerandrecoder.main.PlayerMainActivity">
-            <intent-filter>
+ <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

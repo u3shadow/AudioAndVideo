@@ -1,4 +1,4 @@
-package com.u3coding.playerandrecoder.audiorecoder;
+package com.u3coding.playerandrecoder.audio;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -8,7 +8,6 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class AudioRecorder {
     private int bufferSize;

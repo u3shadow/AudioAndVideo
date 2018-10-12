@@ -1,15 +1,12 @@
-package com.u3coding.playerandrecoder.audiorecoder;
+package com.u3coding.playerandrecoder.audio;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.u3coding.audioandvideo.R;
-import com.u3coding.playerandrecoder.encoders.AACEncoder;
 
 public class RecordAudioViewModel extends AndroidViewModel implements LifecycleObserver{
     private RecordPage page;

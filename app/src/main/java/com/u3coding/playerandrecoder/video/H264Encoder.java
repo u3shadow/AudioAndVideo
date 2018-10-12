@@ -1,4 +1,4 @@
-package com.u3coding.playerandrecoder.videorecoder;
+package com.u3coding.playerandrecoder.video;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;

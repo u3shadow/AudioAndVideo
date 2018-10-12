@@ -1,4 +1,4 @@
-package com.u3coding.playerandrecoder.videorecoder;
+package com.u3coding.playerandrecoder.video;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
@@ -16,9 +15,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.u3coding.audioandvideo.R;
 
@@ -28,7 +27,7 @@ import java.io.IOException;
  * Created by u3-linux on 18-2-14.
  */
 
-public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Callback,Camera.PreviewCallback,View.OnClickListener{
+public class RecordVideoActivity extends AppCompatActivity implements SurfaceHolder.Callback,Camera.PreviewCallback,View.OnClickListener {
     private SurfaceView surfaceview;
 
     private SurfaceHolder surfaceHolder;
@@ -54,12 +53,15 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_test);
+        Button record = findViewById(R.id.record_bt);
+        record.setOnClickListener(this);
         getSupportActionBar().hide();
         viewModel = ViewModelProviders.of(this).get(RecordVideoViewModel.class);
         surfaceview = (SurfaceView)findViewById(R.id.surfaceview);
         surfaceHolder = surfaceview.getHolder();
         surfaceHolder.addCallback(this);
         SupportAvcCodec();
+
     }
 
     private boolean checkCameraHardware(Context context) {
@@ -84,14 +86,14 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.bt_record:
+     switch (v.getId()){
+            case R.id.record_bt:
                 viewModel.startRecord(width,height);
                 isStart = true;
                 break;
             case R.id.bt_stop:
-                viewModel.stopRecord();
                 isStart =false;
+                viewModel.stopRecord();
                 break;
                 default:break;
         }

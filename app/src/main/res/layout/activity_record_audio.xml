@@ -5,12 +5,12 @@
     <data>
         <variable
             name="pagetext"
-            type="com.u3coding.playerandrecoder.audiorecoder.RecordPage"/>
+            type="com.u3coding.playerandrecoder.audio.RecordPage"/>
     </data>
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.u3coding.playerandrecoder.audiorecoder.RecordAudioActivity">
+    tools:context="com.u3coding.playerandrecoder.audio.RecordAudioActivity">
 
     <TextView
         android:id="@+id/tv_record"

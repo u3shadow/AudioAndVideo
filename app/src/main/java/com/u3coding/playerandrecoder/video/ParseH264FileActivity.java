@@ -1,4 +1,4 @@
-package com.u3coding.playerandrecoder.videorecoder;
+package com.u3coding.playerandrecoder.video;
 
 import android.app.Activity;
 import android.media.MediaCodec;

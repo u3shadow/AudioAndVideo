@@ -1,4 +1,4 @@
-package com.u3coding.playerandrecoder.videorecoder;
+package com.u3coding.playerandrecoder.video;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -19,7 +19,9 @@ public class RecordVideoViewModel extends AndroidViewModel{
         YUVQueue = new LinkedBlockingQueue<>();
     }
     public void recordData(byte[] data){
-        YUVQueue.add(data);
+        if (YUVQueue != null&&data != null) {
+            YUVQueue.add(data);
+        }
     }
     public void setName(String name){
     }

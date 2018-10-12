@@ -1,4 +1,4 @@
-package com.u3coding.playerandrecoder.encoders;
+package com.u3coding.playerandrecoder.audio;
 
 import android.media.MediaCodec;
 import android.media.MediaExtractor;
