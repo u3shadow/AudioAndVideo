@@ -11,6 +11,9 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.os.Environment;
+
+import static com.u3coding.playerandrecoder.video.RecordVideoViewModel.YUVQueue;
+
 public class H264Encoder {
     private final static String TAG = "MeidaCodec";
 
@@ -23,13 +26,11 @@ public class H264Encoder {
     byte[] m_info = null;
 
     public byte[] configbyte;
-    private Queue<byte[]> YUVQueue;
 
 
     @SuppressLint("NewApi")
-    public H264Encoder(int width, int height, int framerate, int bitrate, Queue<byte[]> YUVQueue) {
+    public H264Encoder(int width, int height, int framerate, int bitrate) {
 
-        this.YUVQueue = YUVQueue;
         m_width  = width;
         m_height = height;
         m_framerate = framerate;

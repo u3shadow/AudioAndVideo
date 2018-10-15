@@ -40,7 +40,7 @@ public class RecordVideoActivity extends AppCompatActivity implements SurfaceHol
     int width = 1280;
 
     int height = 720;
-
+    int count = 0;
     int framerate = 30;
 
     int biterate = 8500*1000;
@@ -61,7 +61,8 @@ public class RecordVideoActivity extends AppCompatActivity implements SurfaceHol
         surfaceHolder = surfaceview.getHolder();
         surfaceHolder.addCallback(this);
         SupportAvcCodec();
-
+                viewModel.startRecord(width,height);
+                isStart = true;
     }
 
     private boolean checkCameraHardware(Context context) {
@@ -88,8 +89,6 @@ public class RecordVideoActivity extends AppCompatActivity implements SurfaceHol
     public void onClick(View v) {
      switch (v.getId()){
             case R.id.record_bt:
-                viewModel.startRecord(width,height);
-                isStart = true;
                 break;
             case R.id.bt_stop:
                 isStart =false;
@@ -101,8 +100,10 @@ public class RecordVideoActivity extends AppCompatActivity implements SurfaceHol
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
-        if (isStart)
+        if (isStart&&count > 1)
         viewModel.recordData(data);
+        count++;
+
     }
 
     @Override
