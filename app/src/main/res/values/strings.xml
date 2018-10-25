@@ -11,4 +11,5 @@
     <string name="input_name">input name</string>
     <string name="audio">audio</string>
     <string name="video">video</string>
+    <string name="title_activity_glsure_face">GLSureFaceActivity</string>
 </resources>

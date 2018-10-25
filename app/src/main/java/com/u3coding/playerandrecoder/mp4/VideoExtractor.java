@@ -1,6 +1,7 @@
 package com.u3coding.playerandrecoder.mp4;
 
 import android.media.MediaCodec;
+import android.media.MediaCodecInfo;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
@@ -8,54 +9,46 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.coremedia.iso.boxes.Container;
+import com.googlecode.mp4parser.DataSource;
+import com.googlecode.mp4parser.FileDataSourceImpl;
+import com.googlecode.mp4parser.authoring.Movie;
+import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
+import com.googlecode.mp4parser.authoring.tracks.h264.H264TrackImpl;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+
 
 /**
  * Created by u3-linux on 18-2-14.
  */
 
 public class VideoExtractor {
-    public void muxerMediaVideo(){
+    public void muxerMP4(){
         try {
-            MediaExtractor mediaExtractor = getMediaExtractor(Environment.getExternalStorageDirectory().getAbsoluteFile() + "/oooo.h264");
-            int videoIndex = getIndex(mediaExtractor,"video/");
-            //切换道视频信号的信道
-            mediaExtractor.selectTrack(videoIndex);
-            MediaFormat trackFormat = mediaExtractor.getTrackFormat(videoIndex);
-            MediaMuxer mediaMuxer = new MediaMuxer( Environment.getExternalStorageDirectory().getAbsoluteFile()+ "/output.mp4", MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
-            int videoSampleTime;
-            ByteBuffer byteBuffer = ByteBuffer.allocate(500 * 1024);
-            videoSampleTime = trackFormat.getInteger(MediaFormat.KEY_FRAME_RATE);
-            int trackIndex = mediaMuxer.addTrack(trackFormat);
-            MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
-            mediaMuxer.start();
-            bufferInfo.presentationTimeUs = 0;
-            while (true) {
-                int readSampleSize = mediaExtractor.readSampleData(byteBuffer, 0);
-                if (readSampleSize < 0) {
-                    break;
-                }
-                mediaExtractor.advance();
-                bufferInfo.size = readSampleSize;
-                bufferInfo.offset = 0;
-                bufferInfo.flags = MediaCodec.BUFFER_FLAG_SYNC_FRAME;
-                bufferInfo.presentationTimeUs += 1000*1000 / videoSampleTime;
-                mediaMuxer.writeSampleData(trackIndex, byteBuffer, bufferInfo);
-            }
-            //release
-            mediaMuxer.stop();
-            mediaExtractor.release();
-            mediaMuxer.release();
+            String h264Path = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/oooo.h264";
 
-            Log.e("TAG", "finish");
-        } catch (Exception e) {
+            DataSource videoFile = new FileDataSourceImpl(h264Path);
+
+            H264TrackImpl h264Track = new H264TrackImpl(videoFile, "eng", 5, 1); // 5fps. you can play with timescale and timetick to get non integer fps, 23.967 is 24000/1001
+
+            Movie movie = new Movie();
+
+            movie.addTrack(h264Track);
+
+            Container out = new DefaultMp4Builder().build(movie);
+            FileOutputStream fos = new FileOutputStream(new File(Environment.getExternalStorageDirectory().getAbsoluteFile()+ "/output.mp4"));
+            out.writeContainer(fos.getChannel());
+
+            fos.close();
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
-
     public void muxerMediaAudio(){
         try {
             MediaExtractor mediaExtractor = getMediaExtractor(Environment.getExternalStorageDirectory().getAbsoluteFile() + "/oooo.aac");

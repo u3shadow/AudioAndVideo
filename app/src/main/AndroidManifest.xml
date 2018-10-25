@@ -18,23 +18,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".mp4.MediaExAndMuxerActivity" />
         <activity android:name=".opengl.OpenGLES20Activity" />
-        <activity android:name="com.u3coding.playerandrecoder.audio.RecordAudioActivity"/>
-        <activity android:name=".video.VideoActivity">
+        <activity android:name="com.u3coding.playerandrecoder.audio.RecordAudioActivity" />
+        <activity android:name=".video.VideoActivity"></activity>
+        <activity android:name="com.u3coding.playerandrecoder.video.RecordVideoActivity" />
+        <activity android:name=".TestActivity" />
+        <activity android:name="com.u3coding.playerandrecoder.video.ParseH264FileActivity">
 
         </activity>
-        <activity android:name="com.u3coding.playerandrecoder.video.RecordVideoActivity"/>
-        <activity android:name=".TestActivity"/>
-        <activity android:name="com.u3coding.playerandrecoder.video.ParseH264FileActivity"/>
         <activity android:name="com.u3coding.playerandrecoder.main.PlayerMainActivity">
- <intent-filter>
+                        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".opengl.GLSureFaceActivity"
+            android:label="@string/title_activity_glsure_face"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

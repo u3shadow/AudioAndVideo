@@ -19,6 +19,6 @@ public class MainPage{
      public void merge(View view){
          VideoExtractor extractor = new VideoExtractor();
          extractor.muxerMediaAudio();
-         extractor.muxerMediaVideo();
+         extractor.muxerMP4();
     }
 }

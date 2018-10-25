@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "io.reactivex.rxjava2:rxjava:2.1.13"
+    implementation 'com.googlecode.mp4parser:isoparser:1.1.21'
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
     testImplementation "android.arch.core:core-testing:1.1.1"
     testImplementation 'junit:junit:4.12'
